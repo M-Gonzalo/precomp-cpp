@@ -1,4 +1,4 @@
-/* Copyright 2006-2020 Christian Schneider
+/* Copyright 2006-2021 Christian Schneider
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -347,9 +347,9 @@ enum {
 // msg = Buffer for error messages (256 bytes buffer size are enough)
 DLL void get_copyright_msg(char* msg) {
   if (V_MINOR2 == 0) {
-    sprintf(msg, "Precomp DLL v%i.%i (c) 2006-2020 by Christian Schneider",V_MAJOR,V_MINOR);
+    sprintf(msg, "Precomp DLL v%i.%i (c) 2006-2021 by Christian Schneider",V_MAJOR,V_MINOR);
   } else {
-    sprintf(msg, "Precomp DLL v%i.%i.%i (c) 2006-2020 by Christian Schneider",V_MAJOR,V_MINOR,V_MINOR2);
+    sprintf(msg, "Precomp DLL v%i.%i.%i (c) 2006-2021 by Christian Schneider",V_MAJOR,V_MINOR,V_MINOR2);
   }
 }
 
@@ -636,7 +636,7 @@ int init(int argc, char* argv[]) {
     printf("Precomp v%i.%i.%i %s %s - %s version",V_MAJOR,V_MINOR,V_MINOR2,V_OS,V_BIT,V_STATE);
   }
   printf(" - %s\n",V_MSG);
-  printf("Free for non-commercial use - Copyright 2006-2020 by Christian Schneider\n");
+  printf("Free for non-commercial use - Copyright 2006-2021 by Christian Schneider\n");
   printf("  preflate v0.3.5 support - Copyright 2018 by Dirk Steinke\n\n");
 
   // init compression and memory level count
@@ -1333,7 +1333,7 @@ int init_comfort(int argc, char* argv[]) {
     printf("Precomp Comfort v%i.%i.%i %s %s - %s version",V_MAJOR,V_MINOR,V_MINOR2,V_OS,V_BIT,V_STATE);
   }
   printf(" - %s\n",V_MSG);
-  printf("Free for non-commercial use - Copyright 2006-2020 by Christian Schneider\n\n");
+  printf("Free for non-commercial use - Copyright 2006-2021 by Christian Schneider\n\n");
 
   // init compression and memory level count
   bool use_zlib_level[81];
@@ -7881,7 +7881,7 @@ void write_ftempout_if_not_present(long long byte_count, bool in_memory, bool le
   }
 }
 
-recursion_result recursion_compress(long long compressed_bytes, long long decompressed_bytes, bool deflate_type) {
+recursion_result recursion_compress(long long compressed_bytes, long long decompressed_bytes, bool deflate_type, bool in_memory) {
   FILE* recursion_fout;
   recursion_result tmp_r;
   tmp_r.success = false;
@@ -7898,7 +7898,7 @@ recursion_result recursion_compress(long long compressed_bytes, long long decomp
   }
 
   if (deflate_type) {
-    write_ftempout_if_not_present(decompressed_bytes, true);
+    write_ftempout_if_not_present(decompressed_bytes, in_memory);
   }
 
   recursion_push();
@@ -8001,7 +8001,7 @@ recursion_result recursion_compress(long long compressed_bytes, long long decomp
   return tmp_r;
 }
 recursion_result recursion_write_file_and_compress(const recompress_deflate_result& rdres) {
-  recursion_result r = recursion_compress(rdres.compressed_stream_size, rdres.uncompressed_stream_size, true);
+  recursion_result r = recursion_compress(rdres.compressed_stream_size, rdres.uncompressed_stream_size, true, rdres.uncompressed_in_memory);
   return r;
 }
 
